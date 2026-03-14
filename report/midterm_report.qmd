@@ -1,0 +1,45 @@
+Midterm Project JSC370
+Jeremy Chan Yuk Chun (1010067213)
+https://github.com/JqrqmyChqn/conflict-market-analysis.git
+
+Introduction
+Financial markets are influenced not just by economic fundamentals, but arguably more so, investor sentiment. In periods of uncertainty, negative sentiment/speculations can heighten percieved risk and cause high volatility in prices. Therefore, understanding how sentiment can drive price movements and volatility is a question of paramount importance in finance.
+
+This project aims to investigate whether changes in sentiment are associated with increased volatility in equity markets. We use daily price data for different Exchange-Traded Funds (ETFs) to measure sector level returns and volatility, with the following 6 categories and the chosen stock's ticker, Energy sector (XLE), Financial sector (XLF), Industrial sector (XLI), Technology sector (XLK), Healthcare sector (XLV) and overall U.S. equity benchmark (SPY). The Economic Policy Uncertainty (EPU) index, developed by Baker, Bloom and Davis (2016) is a measure of media sentiment on the uncertainty surrounding economic policy. Using these two datasets, we conducted an initial investigation on how news sentiment influences volatility in equity prices across different aggregated sectors. 
+
+So out analysis aims to answer two main research questions:
+1. Does higher uncertainty in market sentiment associate with increased volatility?
+2. Do different sectors respond different to changes in sentiment?
+
+We hypothesize that sentiment is a dominating factor guiding the decisions of industry and commercial investors, especially when using EPU as a measure. Policy uncertainty sentiment will be associated with higher market volatility, with stronger effects in financials and energy sectors that are more directly downstream to economic policy changes, and weaker effects in healthcare and other sectors further downstream.
+
+Methods
+As mentioned in the introduction, we employ two primary datasets, stock market data for sector ETFs and EPU index data. Stock market data was obtained using the TwelveData API, which provided historical finance market data. 6 ETFs were chosen to represent sector level prices: Energy (XLE), financials (XLF), industrials (XLI), technology (XLK), healthcare (XLV), and the overall market (SPY). For each of these stocks, we retrieved their open/closing price, high, low, and trading volume. Data from 2006-2026 were pulled.  The EPU index data was obtained through the Federal Reserve Economic Data (FRED) API. The EPU index measures frequency and extent of newspaper articles discussing uncertainty in economic policy and is commonly used as a indicator of macroeconomic sentiment. Monthly EPU index values were extracted. Similarily, data from 2006-2026 were pulled.
+Data processing and feature construction
+Feature engineering of daily returns and monthly volatility was performed. We first transformed raw stock price data into daily log returns. Then daily log returns were aggregated by moth to compute monthly volatility. Additional features such as mean daily return, total monthly trading volume, and number of trading days per month were computed. A year-month identifier was also created to join with the EPU data. The two datasets were joined via the year-month key. Each observation in the resultingn dataset represented a specific ETF at a specifc year-month, with its monthly volatility and its corresponding EPU value. 
+Exploratory data analysis was conducted using python libraries including pandas, numpy, matplotlib, and seaborn. Several methods were used in examining the relationship between our variables of interest. Time series visualisations were created to compare price trends and EPU trends over time. 
+
+Preliminary Results
+Summary Statistics
+Summary statistics were computed for key variables used in the analysis, such as EPU index, sector volatility, average daily return, and trading volume. The mean EPU is about 140, with substantial variation with a standard deviation of 56. The maximum value is 460, suggesting big jumps in periods of high uncertainty. Monthly volatility has a mean of 1.23, with a maximum value of 9.04%. Mean daily returns are close to 0 which is consistent with financial markets standards. We then computed summary statistics for sector level volatility. We see that volatility is ranges across sectors, with the energy sector having the higher mean volatility of 1.62%, and the healthcare sector having the lowest mean volatility of 0.9%.
+
+Figure 1: Economic policy uncertainty and sector volatility over time
+
+
+
+In our first figure, the time series of EPU index (Upper panel)along with monthly volatility for the six chosen ETFs (Lower panel) are plotted. There are several periods of notable uncertainty jumps in the EPU index, corresponding to the 2008-2009 global financial crisis, the COVID19 pandemic, and recent surge of global conflict. These instances correspond to major economic disruptions and periods where media attention around economic policy had speculative and negative sentiment. We see that sector volatility sees similar rises during these periods, with the most substantial rises in the first two periods, and a smaller reaction for the more recent jump in EPU. Across the entire timeframe, volatility appears to strongly associate with the EPU, suggesting that a positive relationship is present between the two variables. 
+
+Figure 2: Sector volatility during high vs low policy uncertainty
+
+
+
+Figure 2 compares sector level volatility during periods of high uncertainty, which we defined as the top 25% of EPU vs periods of low uncertainty. Across all sectors, volatility distributions are consistently higher in periods of high uncertainty, with this pattern being particularly strong in the energy (XLE) and financial (XLF) sectors, while the healthcare sector shows more stable volatility changes compared to the others. This observation agrees with our hypothesis. 
+
+Summary
+This analysis conducted an initial exploration between macroeconomic sentiment with a media context, and stock market volatility. Using the EPU index as a refection of economic sentiment, we examined how sentiment corresponds to sector level volatility and the different effect amongst different sectors. 
+Preliminary results suggest that media sentiment on uncertainty is highly associated with higher volatility across most sectors, with more pronounced effects in the energy and financial sector. We also discovered that these effects are very event driven, with huge spikes surrounding major events such as the 2008 financial crisis and COVID19 pandemic. 
+For the final project, we plan to extend this analysis using additional sentiment data sources and ML modelling. First we will involve more dimensions of market sentiment and with more time specificity (By day instead of just by month) to improve temporal resolution of our analysis. For example, we will incorporate sentiment signals from online communities like WallStreetBets on reddit to capture commercial investor sentiment. Natural language processing techniques will be used to extract sentiment scores from these contexts. We will then develop machine learning models to predict sector volatility using a combination of economic features and sentiment features. Employing both regression based and tree based approaches. 
+The results will be presented through an interactive web application to enable users to explore sector differences, and sentiment dynamics over time. Together these extensions aim to provide a comprehensive understanding of how sentiment factors affect financial market volatility.
+
+
+
